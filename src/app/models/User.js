@@ -40,9 +40,19 @@ UserSchema.methods = {
 UserSchema.statics = {
   generateToken({ id }) {
     return jwt.sign({ id }, authConfig.secret, {
-      expiresIn: authConfig.ttl,
+      expiresIn: authConfig.expiresIn,
     });
   },
 };
+
+UserSchema.set('toJSON', {
+  transform(doc, ret, opt) {
+    delete ret.password;
+    ret.id = ret._id;
+    delete ret._id;
+    delete ret.__v;
+    return ret;
+  },
+});
 
 export default mongoose.model('User', UserSchema);
