@@ -1,24 +1,24 @@
 FORMAT: 1A
-HOST: http://localhost:3333
+HOST: http://localhost:3000
 
 # Toolbox API
 
-# Group API
+This is a api create to BossaBox challenge, we can Create, List, and Delete tools.
 
-## About [/]
-This is a api create to BossaBox challenge
+
 
 # Group Users
 
 ## Users [/users]
 
 ### Create a new user account [POST]
+You can create a new user account sending **name**, **email** and **password**.
+This should return a JSON object containing user registred data in database.
 
 + Request (application/json)
-
     {  
         "name": "Kelvyn Santana",
-        "email": "santanakelvyn@gmail.com"
+        "email": "santanakelvyn@gmail.com",
         "password: "123456"
     }
 
@@ -33,4 +33,140 @@ This is a api create to BossaBox challenge
         "updatedAt": "2020-06-26T18:14:18.175Z",
         "id": "5ef63afa11de980b56ce9970"
     }
+
+# Group Authentication
+
+## Sessions [/sessions]
+
+### Create a new user session [POST]
+To execute actions in API you need a JWT token. 
+To get a JWT token you need send a JSON object with valid  **email**, and **password**, and this should return a JSON object containing **user data** and **JWT token**
+
++ Request (application/json)
+    {
+        "email": "santanakelvyn@gmail.com",
+        "password: "123456
+    }
+
++ Response 200
+    {
+        "user": {
+            "name": "Kelvyn Santana",
+            "email": "santanakelvyn@gmail.com",
+            "createdAt": "2020-06-26T18:52:51.060Z",
+            "updatedAt": "2020-06-26T18:52:51.060Z",
+            "id": "5ef6440314881f1ac7cb543d"
+        },
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjVlZjY0NDAzMTQ4ODFmMWFjN2NiNTQzZCIsImlhdCI6MTU5MzE5NzYwNCwiZXhwIjoxNTkzMzcwNDA0fQ.w6HLgJZSJb1ySyF3GRuQ89eK0Rzik8Qu88xxcTk_x_c"
+    }
+
+# Group Tools 
+
+## Tools [/tools]
+We have create, read, update and delete tools in application
+
+### List [GET]
+Return all tools in database.
+
+You have added a optional query parameter `tag` to filter results by tag.
+
+
+
++ Response 200 (application/json)
+
+    [
+        {
+            "tags": [
+            "code",
+            "development",
+            "editor"
+            ],
+            "title": "Visual Studio Code",
+            "link": "https://code.visualstidio.com",
+            "description": "The best and most used code editor",
+            "createdAt": "2020-06-26T19:41:19.107Z",
+            "updatedAt": "2020-06-26T19:41:19.107Z",
+            "id": "5ef64f5f14881f1ac7cb543e"
+        },
+        {
+            "tags": [
+            "notes",
+            "productivity",
+            "editor"
+            ],
+            "title": "Notion",
+            "link": "https://notion.so",
+            "description": "Notes",
+            "createdAt": "2020-06-26T19:57:33.378Z",
+            "updatedAt": "2020-06-26T19:57:33.378Z",
+            "id": "5ef6532d14881f1ac7cb543f"
+        }
+    ]
+
+### Create Tool [POST]
+
++ Request (application/json)
+
+    
+    {
+        "title": "Visual Studio Code",
+        "link": "https://code.visualstidio.com",
+        "description": "The best and most used code editor",
+        "tags": ["code", "development", "editor"]
+    }
+
++ Response 201
+
+    {
+        "tags": [
+            "code",
+            "development",
+            "editor"
+        ],
+        "title": "Visual Studio Code",
+        "link": "https://code.visualstidio.com",
+        "description": "The best and most used code editor",
+        "createdAt": "2020-06-26T19:41:19.107Z",
+        "updatedAt": "2020-06-26T19:41:19.107Z",
+        "id": "5ef64f5f14881f1ac7cb543e"
+    }
+
+## Tools by Tag [/tools?tag=code]
+
+### List by tag [GET]
+
++ Parameters
+    + tag (string, optional)
+
++ Response 200 (application/json)
+    {
+        "tools": [
+            {
+            "tags": [
+                "code",
+                "development",
+                "editor"
+            ],
+            "title": "Visual Studio Code",
+            "link": "https://code.visualstidio.com",
+            "description": "The best and most used code editor",
+            "createdAt": "2020-06-26T19:41:19.107Z",
+            "updatedAt": "2020-06-26T19:41:19.107Z",
+            "id": "5ef64f5f14881f1ac7cb543e"
+            }
+        ],
+        "filter": "code"
+    }
+
+
+
+## Delete Tool [/tools/:id]
+
+### Delete tool [DELETE]
+
++ Parameters
+    + id (string, required)
+
++ Response 204
+
 
