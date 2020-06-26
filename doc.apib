@@ -1,0 +1,36 @@
+FORMAT: 1A
+HOST: http://localhost:3333
+
+# Toolbox API
+
+# Group API
+
+## About [/]
+This is a api create to BossaBox challenge
+
+# Group Users
+
+## Users [/users]
+
+### Create a new user account [POST]
+
++ Request (application/json)
+
+    {  
+        "name": "Kelvyn Santana",
+        "email": "santanakelvyn@gmail.com"
+        "password: "123456"
+    }
+
++ Response 201 (application/json)
+
+    + Body
+
+    {
+        "name": "Kelvyn Santana",
+        "email": "santanakelvyn@gmail.com",
+        "createdAt": "2020-06-26T18:14:18.175Z",
+        "updatedAt": "2020-06-26T18:14:18.175Z",
+        "id": "5ef63afa11de980b56ce9970"
+    }
+
