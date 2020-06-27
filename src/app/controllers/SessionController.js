@@ -7,11 +7,11 @@ class SessionController {
     const user = await User.findOne({ email });
 
     if (!user) {
-      return response.status(400).json('Email or password incorrect.');
+      return response.status(401).json('Email or password incorrect.');
     }
 
     if (!(await user.compareHash(password))) {
-      return response.status(400).json('Email or password incorrect.');
+      return response.status(401).json('Email or password incorrect.');
     }
 
     return response.json({ user, token: User.generateToken(user) });

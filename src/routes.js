@@ -1,5 +1,7 @@
 import { Router } from 'express';
 
+import authMiddleware from './app/middlewares/auth';
+
 import UserController from './app/controllers/UserController';
 import SessionController from './app/controllers/SessionController';
 import ToolsController from './app/controllers/ToolsController';
@@ -20,6 +22,7 @@ route.post('/users', UserController.store);
 
 route.post('/sessions', SessionController.store);
 
+route.use(authMiddleware);
 /** Tools */
 route.get('/tools', ToolsController.index);
 

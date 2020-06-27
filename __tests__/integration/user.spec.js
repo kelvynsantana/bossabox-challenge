@@ -1,29 +1,27 @@
 import request from 'supertest';
-import { MongoClient } from 'mongodb';
+import mongoose from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 import factory from '../factories';
 import app from '../../src/app';
+import User from '../../src/app/models/User';
 
 describe('User', () => {
-  let connection;
-  let db;
   beforeAll(async () => {
-    if (!process.env.MONGO_URL) {
-      throw new Error('MongoDB server not initialized');
-    }
-
-    connection = await MongoClient.connect(process.env.MONGO_URL, {
+    await mongoose.connect(process.env.MONGO_URL, {
       useNewUrlParser: true,
+      useFindAndModify: true,
       useUnifiedTopology: true,
+      useCreateIndex: true,
     });
-    db = await connection.db();
   });
+
   afterAll(async () => {
-    await connection.close();
+    await mongoose.connection.close();
   });
+
   beforeEach(async () => {
-    await db.collection('users').deleteMany({});
+    await User.deleteMany({});
   });
 
   it('should be able to register a new user', async (done) => {
