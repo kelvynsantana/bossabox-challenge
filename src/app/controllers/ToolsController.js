@@ -6,7 +6,7 @@ class ToolsController {
 
     if (tag) {
       const toolsByTag = await Tool.find({ tags: tag });
-      return response.json(toolsByTag);
+      return response.json({ tools: toolsByTag, filter: tag });
     }
     const tools = await Tool.find();
 
