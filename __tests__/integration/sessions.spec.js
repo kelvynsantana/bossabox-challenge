@@ -6,7 +6,7 @@ import User from '../../src/app/models/User';
 
 import factory from '../factories';
 
-describe('Sessions', () => {
+describe('Authentication', () => {
   beforeAll(async () => {
     await mongoose.connect(process.env.MONGO_URL, {
       useNewUrlParser: true,
