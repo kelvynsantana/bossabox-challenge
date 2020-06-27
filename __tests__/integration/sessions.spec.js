@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import { MongoClient } from 'mongodb';
 import request from 'supertest';
 
 import app from '../../src/app';
@@ -7,21 +7,24 @@ import User from '../../src/app/models/User';
 import factory from '../factories';
 
 describe('Authentication', () => {
+  let connection;
+  let db;
   beforeAll(async () => {
-    await mongoose.connect(process.env.MONGO_URL, {
+    if (!process.env.MONGO_URL) {
+      throw new Error('MongoDB server not initialized');
+    }
+
+    connection = await MongoClient.connect(process.env.MONGO_URL, {
       useNewUrlParser: true,
-      useFindAndModify: true,
       useUnifiedTopology: true,
-      useCreateIndex: true,
     });
+    db = await connection.db();
   });
-
   afterAll(async () => {
-    await mongoose.connection.close();
+    await connection.close();
   });
-
   beforeEach(async () => {
-    await User.deleteMany({});
+    await db.collection('users').deleteMany({});
   });
 
   it('should be able return JWT token when recieve valid credentials.', async () => {
