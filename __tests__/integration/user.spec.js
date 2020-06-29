@@ -58,4 +58,21 @@ describe('User', () => {
 
     expect(response.status).toBe(400);
   });
+
+  it ('should not create user without required fields', async() =>{
+    const response = await request(app).post('/users').send({})
+
+    expect(response.status).toBe(400)
+  })
+
+  it (' must not create a user without a password with at least 6 characters ', async() =>{
+    const response = await request(app).post('/users').send({
+      name: 'Kelvyn Santana',
+      email: 'santanakelvyn@gmail.com',
+      password: '12345',
+    })
+
+    expect(response.status).toBe(400)
+  })
+
 });

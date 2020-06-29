@@ -1,3 +1,4 @@
+import * as Yup from 'yup';
 import Tool from '../models/Tool';
 
 class ToolsController {
@@ -14,19 +15,25 @@ class ToolsController {
   }
 
   async store(request, response) {
-    try {
-      const { title, link, description, tags } = request.body;
+    const schema = Yup.object().shape({
+      title: Yup.string().required(),
+      link: Yup.string().url().required(),
+      description: Yup.string(),
+      tags: Yup.array().of(Yup.string()),
+    });
 
-      const tool = await Tool.create({
-        title,
-        link,
-        description,
-        tags,
-      });
-      return response.status(201).json(tool);
-    } catch (err) {
-      return response.status(500).json({ error: 'Internal Server Error' });
+    if (!(await schema.isValid(request.body))) {
+      return response.status(400).json({ error: 'Validation Fails' });
     }
+    const { title, link, description, tags } = request.body;
+
+    const tool = await Tool.create({
+      title,
+      link,
+      description,
+      tags,
+    });
+    return response.status(201).json(tool);
   }
 
   async destroy(request, response) {

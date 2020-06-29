@@ -44,4 +44,27 @@ describe('Tools', () => {
       });
     expect(response.body).toHaveProperty('id');
   });
+
+  it('should not create tool without required fields', async () => {
+    const user = await factory.create('User', {});
+
+    const response = await request(app)
+      .post('/tools')
+      .set('Authorization', `Bearer ${await User.generateToken(user)}`)
+      .send({});
+    expect(response.status).toBe(400);
+  });
+
+  it('shout be able return all tools in database', async () => {
+    const user = await factory.create('User', {});
+
+    await factory.create('Tool', {});
+
+    const response = await request(app)
+      .get('/tools')
+      .set('Authorization', `Bearer ${await User.generateToken(user)}`)
+
+      .send({});
+    expect(response.body[0]).toHaveProperty('id');
+  });
 });
